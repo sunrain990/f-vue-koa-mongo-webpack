@@ -10,7 +10,7 @@ function register (app) {
     });
     router.get('/', function(){
         var config = this.config;
-        debug('env:%s',config.env);
+        //debug('env:%s',config.env);
         this.body = config;
     }); // responds to "/api"
     app.use(router.routes());

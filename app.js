@@ -20,6 +20,8 @@ publicFiles._name = 'static';
 
 const app = koa();
 
+require('./webpack.js')(app);
+
 app.use(function *(next){
     //config 注入中间件，方便调用配置信息
     if(!this.config){
@@ -54,7 +56,18 @@ app.use(function *pageNotFound(next){
 });
 
 app.use(publicFiles);
-require('./routes')(app);
+require('./main/routes')(app);
 onerror(app);
 
-app.listen(process.env.PORT || 5000);
+
+console.log(config.build.index,config.build.assetsRoot,config.build.assetsSubDirectory);
+
+
+const port = process.env.PORT || config.port;
+module.exports = app.listen(port, function (err) {
+    if (err) {
+        console.log(err)
+        return
+    }
+    console.log('Listening at http://localhost:' + port + '\n')
+});
